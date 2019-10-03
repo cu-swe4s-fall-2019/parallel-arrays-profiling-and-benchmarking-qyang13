@@ -23,7 +23,7 @@ def boxplot(L, xticlabel, xlabel, geneName, out_file_name):
     ax.set_xticklabels(xticlabel, rotation=90)
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Gene read counts")
-    ax.set_title('Gene: '+ geneName)
+    ax.set_title('Gene: ' + geneName)
 
     plt.savefig(out_file_name, bbox_inches='tight')
     plt.close()
