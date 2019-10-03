@@ -1,7 +1,9 @@
 import unittest
 import plot_gtex as pg
 
+
 class TestPlotGtex(unittest.TestCase):
+    '''Test for functions in plot_gtex'''
     def test_linear_search(self):
         '''Test for linear search'''
         L = [2, 4, 5, 6, 7, 8]
@@ -31,6 +33,7 @@ class TestPlotGtex(unittest.TestCase):
         '''Test for binary search'''
         L = [['a', 1], ['b', 2], ['c', 3], ['d', 4]]
         self.assertEqual(pg.binary_search('z', L), -1)
+
 
 if __name__ == '__main__':
     unittest.main()

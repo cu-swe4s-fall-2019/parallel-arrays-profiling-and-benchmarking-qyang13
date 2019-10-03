@@ -145,10 +145,12 @@ def main():
                 rna_header_plus_index.append([rna_header[i], i])
             rna_header_plus_index.sort(key=lambda pair: pair[0])
             # Store the index of description
+            # Description_idx = linear_search("Description",
+            #                                 rna_header)
             Description_idx = binary_search("Description",
                                             rna_header_plus_index)
             if Description_idx == -1:
-                sys.write('Description not found in header.')
+                sys.exit('Description not found in header.')
 
         else:
             rna_counts = l.rstrip().split("\t")
@@ -158,6 +160,8 @@ def main():
                 for tissue_idx in range(len(tissue_group)):
                     # For each individual in the same tissue type
                     for sample in categoraized_ids[tissue_idx]:
+                        # rna_header_idx = linear_search(sample,
+                        #                                rna_header)
                         rna_header_idx = binary_search(sample,
                                                        rna_header_plus_index)
                         # Some of the sampeles do not have rna counts
