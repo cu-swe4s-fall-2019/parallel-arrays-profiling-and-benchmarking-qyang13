@@ -1,4 +1,5 @@
 import sys
+import time
 import argparse as ap
 import gzip
 import matplotlib
@@ -74,6 +75,7 @@ def parse_args():
 
 
 def main():
+    main_start = time.time()
     args = parse_args()
     meta_data_file_name = args.sample_attributes
     rna_data_file_name = args.gene_reads
@@ -141,9 +143,11 @@ def main():
             # Use tuple to store the original index
             # and then sort based on the first element in tuple
             rna_header_plus_index = []
+            sort_start = time.time()
             for i in range(len(rna_header)):
                 rna_header_plus_index.append([rna_header[i], i])
             rna_header_plus_index.sort(key=lambda pair: pair[0])
+            sort_end = time.time()
             # Store the index of description
             # Description_idx = linear_search("Description",
             #                                 rna_header)
@@ -156,6 +160,7 @@ def main():
             rna_counts = l.rstrip().split("\t")
 
             if rna_counts[Description_idx] == target_gene_name:
+                search_start = time.time()
                 # For each tissue type
                 for tissue_idx in range(len(tissue_group)):
                     # For each individual in the same tissue type
@@ -168,9 +173,14 @@ def main():
                         if rna_header_idx != -1:
                             count = int(rna_counts[rna_header_idx])
                             counts[tissue_idx].append(count)
+                search_end = time.time()
                 break
 
     dv.boxplot(counts, xlabels, target_type, target_gene_name, out_file_name)
+    main_end = time.time()
+    # print('Sorting time : ' + str(sort_end - sort_start))
+    # print('Searching time : ' + str(search_end - search_start))
+    # print('Main time: ' + str(main_end - main_start))
 
 
 if __name__ == '__main__':

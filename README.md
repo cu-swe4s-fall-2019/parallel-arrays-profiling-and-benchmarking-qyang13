@@ -65,3 +65,16 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
    250    0.100    0.000    0.105    0.000 <frozen importlib._bootstrap_external>:914(get_data)
  22952    0.085    0.000    0.086    0.000 plot_gtex.py:20(binary_search)
 ```
+
+# Benchmarking
+The `time` module is used for benchmarking sort and search, for linear search implementation the time usage is as following:
+```
+Searching time :    16.082679986953735
+Main time:          17.09032106399536
+```
+This is much improved for binary search implementation
+```
+Sorting time :      0.01651620864868164
+Searching time :    0.08899497985839844
+Main time:          1.1266021728515625
+```
