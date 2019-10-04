@@ -46,7 +46,7 @@ Where the required arguments are:
 |--out_file|The filename for the output plot|
 
 The resulting plot should look like this:
-![alt text](https://github.com/cu-swe4s-fall-2019/parallel-arrays-profiling-and-benchmarking-qyang13/ACTA2.png "example plot")
+![alt text](https://github.com/cu-swe4s-fall-2019/parallel-arrays-profiling-and-benchmarking-qyang13/blob/documentation/ACTA2.png "example plot")
 
 
 # Profiling
