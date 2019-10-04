@@ -37,13 +37,14 @@ GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz \
 ```
 
 Where the required arguments are:
-|Argument   |Definition   |
-|---|---|
-|--gene_reads|A read count files where columns are samples and rows are genes|
-|--sample_attributes|The meta data file|
-|--gene|Your gene of interest|
-|--group_type|Your tissue group of interest <`SMTS` or `SMTSD`>|
-|--out_file|The filename for the output plot|
+
+| Argument   | Definition   |
+| --- | ---|
+| --gene_reads | A read count files where columns are samples and rows are genes |
+| --sample_attributes | The meta data file |
+| --gene | Your gene of interest |
+| --group_type | Your tissue group of interest <`SMTS` or `SMTSD`> |
+| --out_file | The filename for the output plot |
 
 The resulting plot should look like this:
 ![alt text](https://github.com/cu-swe4s-fall-2019/parallel-arrays-profiling-and-benchmarking-qyang13/blob/documentation/ACTA2.png "example plot")
