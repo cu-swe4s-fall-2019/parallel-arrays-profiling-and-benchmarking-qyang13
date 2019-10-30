@@ -5,7 +5,8 @@ import gzip
 import matplotlib
 import matplotlib.pyplot as plt
 import data_viz as dv
-import hash_tables as ht
+import importlib
+ht = importlib.import_module("hash-tables-qyang13")
 matplotlib.use('Agg')
 
 
@@ -46,31 +47,31 @@ def parse_args():
                         '--out_file',
                         type=str,
                         help="Output filename",
-                        required=True)
+                        required=False)
 
     parser.add_argument('-a',
                         '--sample_attributes',
                         type=str,
                         help="Input meta data filename",
-                        required=True)
+                        required=False)
 
     parser.add_argument('-c',
                         '--gene_reads',
                         type=str,
                         help="Input read counts filename",
-                        required=True)
+                        required=False)
 
     parser.add_argument('-t',
                         '--group_type',
                         type=str,
                         help="Group type: SMTS or SMTSD",
-                        required=True)
+                        required=False)
 
     parser.add_argument('-g',
                         '--gene',
                         type=str,
                         help="Enter a gene name",
-                        required=True)
+                        required=False)
 
     return parser.parse_args()
 
@@ -83,6 +84,13 @@ def main():
     target_type = args.group_type
     target_gene_name = args.gene
     out_file_name = args.out_file
+
+    # Debug mode
+    meta_data_file_name = 'GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt'
+    rna_data_file_name = 'GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz'
+    target_type = 'SMTS'
+    target_gene_name = 'ACTA2'
+    out_file_name = 'ACTA2.png'
 
     SAMPID = []
     SMTS = []
