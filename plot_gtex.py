@@ -5,6 +5,7 @@ import gzip
 import matplotlib
 import matplotlib.pyplot as plt
 import data_viz as dv
+import hash_tables as ht
 matplotlib.use('Agg')
 
 
