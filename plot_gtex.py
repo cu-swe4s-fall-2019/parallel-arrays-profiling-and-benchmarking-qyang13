@@ -5,11 +5,12 @@ import gzip
 import matplotlib
 import matplotlib.pyplot as plt
 import data_viz as dv
+import importlib
 sys.path.insert(1, "./hash-tables-qyang13/")
-import hash_tables as ht
-import hash_functions as hf
-
+ht = importlib.import_module("hash_tables")
+hf = importlib.import_module("hash_functions")
 matplotlib.use('Agg')
+
 
 def linear_search(key, L):
     '''Linear search to find the key in a list'''
@@ -92,13 +93,6 @@ def main():
     target_gene_name = args.gene
     out_file_name = args.out_file
 
-    # Debug mode
-    meta_data_file_name = 'GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt'
-    rna_data_file_name = 'GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz'
-    target_type = 'SMTS'
-    target_gene_name = 'ACTA2'
-    out_file_name = 'ACTA2.png'
-
     # For unit test, no need to be random
     # Test if the return values match, and the length
     # Also make sure the headers are there
@@ -110,7 +104,7 @@ def main():
     tissue_group = []
     xlabels = []
 
-    if args.hash!=True:
+    if args.hash is not True:
         # This is a 2D array, first layer stores tissue groups, second stores
         # all the sample IDs that belong to that group
         categoraized_ids = []
@@ -156,18 +150,17 @@ def main():
                 sample_info.append(l.rstrip().split("\t"))
         for i in sample_info:
             if categorized_hash.search(i[SMTS_idx]) is None:
-                categorized_hash.add(i[SMTS_idx],i[SAMPID_idx])
+                categorized_hash.add(i[SMTS_idx], i[SAMPID_idx])
             else:
                 hash_slot = categorized_hash.search_slot(i[SMTS_idx])
                 categorized_hash.T[hash_slot][0][1].append(i[SAMPID_idx])
         counts = [[] for i in range(len(categorized_hash.K))]
 
-
     version = None
     dim = None
     rna_header = None
 
-    if args.hash!=True:
+    if args.hash is not True:
         # Processing the count file
         # use gzip.open to read gzip file
         for l in gzip.open(rna_data_file_name, "rt"):
@@ -184,17 +177,17 @@ def main():
                 rna_header = l.rstrip().split("\t")
                 # Use tuple to store the original index
                 # and then sort based on the first element in tuple
-                rna_header_plus_index = []
+                rna_header_index = []
                 sort_start = time.time()
                 for i in range(len(rna_header)):
-                    rna_header_plus_index.append([rna_header[i], i])
-                rna_header_plus_index.sort(key=lambda pair: pair[0])
+                    rna_header_index.append([rna_header[i], i])
+                rna_header_index.sort(key=lambda pair: pair[0])
                 sort_end = time.time()
                 # Store the index of description
                 # Description_idx = linear_search("Description",
                 #                                 rna_header)
                 Description_idx = binary_search("Description",
-                                                rna_header_plus_index)
+                                                rna_header_index)
                 if Description_idx == -1:
                     sys.exit('Description not found in header.')
 
@@ -209,14 +202,15 @@ def main():
                             # rna_header_idx = linear_search(sample,
                             #                                rna_header)
                             rna_header_idx = binary_search(sample,
-                                                           rna_header_plus_index)
+                                                           rna_header_index)
                             # Some of the sampeles do not have rna counts
                             if rna_header_idx != -1:
                                 count = int(rna_counts[rna_header_idx])
                                 counts[tissue_idx].append(count)
                     search_end = time.time()
                     break
-        dv.boxplot(counts, tissue_group, target_type, target_gene_name, out_file_name)
+        dv.boxplot(counts, tissue_group,
+                   target_type, target_gene_name, out_file_name)
 
     # Hash implementation
     else:
@@ -237,17 +231,17 @@ def main():
                 rna_header = l.rstrip().split("\t")
                 # Use tuple to store the original index
                 # and then sort based on the first element in tuple
-                rna_header_plus_index = []
+                rna_header_index = []
                 # sort_start = time.time()
                 for i in range(len(rna_header)):
-                    rna_header_plus_index.append([rna_header[i], i])
-                rna_header_plus_index.sort(key=lambda pair: pair[0])
+                    rna_header_index.append([rna_header[i], i])
+                rna_header_index.sort(key=lambda pair: pair[0])
                 # sort_end = time.time()
                 # Store the index of description
                 # Description_idx = linear_search("Description",
                 #                                 rna_header)
                 Description_idx = binary_search("Description",
-                                                rna_header_plus_index)
+                                                rna_header_index)
                 if Description_idx == -1:
                     sys.exit('Description not found in header.')
 
@@ -268,17 +262,13 @@ def main():
                 if sample_count is not None:
                     counts[i].append(sample_count[0])
             search_end = time.time()
-        dv.boxplot(counts, categorized_hash.K, target_type, target_gene_name, out_file_name)
+        dv.boxplot(counts, categorized_hash.K,
+                   target_type, target_gene_name, out_file_name)
     main_end = time.time()
 
     # print('Sorting time : ' + str(sort_end - sort_start))
-    print('Searching time : ' + str(search_end - search_start))
-    print('Main time: ' + str(main_end - main_start))
-
-
-
-
-
+    # print('Searching time : ' + str(search_end - search_start))
+    # print('Main time: ' + str(main_end - main_start))
 
 
 if __name__ == '__main__':
